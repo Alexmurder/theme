@@ -7,6 +7,7 @@ import recode from "./components/recode/recode.vue";
 import User from "./components/User/User.vue";
 
 import allot from "./components/treelist/copms/allot.vue";
+import backlog from "./components/treelist/copms/backlog.vue";
 import chatlist from "./components/treelist/copms/chatlist.vue";
 import group from "./components/treelist/copms/group.vue";
 import tree from "./components/treelist/copms/tree.vue";
@@ -72,6 +73,10 @@ const routes = [{
             {
                 path:"/allot",
                 component:allot
+            },
+            {
+                path:"/backlog",
+                component:backlog
             }
         ]
     },{

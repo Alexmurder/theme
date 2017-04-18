@@ -88,34 +88,6 @@ let id = 1000;
       remove(store, data) {
         store.remove(data);
       },
-      allot(){
-        // this.$msgbox({
-        //   title: '任务',
-        //   message: '这是一条任务',
-        //   showCancelButton: true,
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   beforeClose: (action, instance, done) => {
-        //     if (action === 'confirm') {
-        //       instance.confirmButtonLoading = true;
-        //       instance.confirmButtonText = '执行中...';
-        //       setTimeout(() => {
-        //         done();
-        //         setTimeout(() => {
-        //           instance.confirmButtonLoading = false;
-        //         }, 300);
-        //       }, 3000);
-        //     } else {
-        //       done();
-        //     }
-        //   }
-        // }).then(action => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '任务 ' + action
-        //   });
-        // });
-      },
        renderContent(h, { node, data, store }) {
         return (
           <span>
@@ -123,10 +95,12 @@ let id = 1000;
               <span>{node.label}</span>
             </span>
             <span style="float: right; margin-right: 20px">
-              <el-button size="mini" on-click={ () => this.append(store, data) }>代办项</el-button>
+            <router-link to="/backlog">
+              <el-button size="mini">我的待办</el-button>
+            </router-link>  
               <el-button size="mini" on-click={ () => this.remove(store, data) }>删除</el-button>
               <router-link to="/allot">
-              <el-button size="mini" on-click={ () => this.allot() }>任务分配</el-button>
+              <el-button size="mini">任务分配</el-button>
               </router-link>
             </span>
           </span>);

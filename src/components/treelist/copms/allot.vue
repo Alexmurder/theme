@@ -1,14 +1,13 @@
 <template>
-<el-form ref="form" :model="form" label-width="80px">
-  <el-form-item label="活动名称">
-    <el-input v-model="form.name"></el-input>
+<el-form ref="form" :model="form" label-width="80px" style="margin-top: 10px">
+  <el-form-item label="任务名称">
+    <el-input style="width: 80%" v-model="form.name" ref="input1"></el-input>
   </el-form-item>
-  <el-form-item label="活动时间">
-    <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" ></el-date-picker>
-    <el-col class="line" :span="2">-</el-col>
-    <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2" style="width: 10%;"></el-time-picker>
+  <el-form-item label="完成时间">
+    <el-date-picker type="date" style="margin-top: -12px" placeholder="选择日期" v-model="form.date1" ></el-date-picker>  
+    <el-time-picker type="fixed-time" style="width:20%;left: 200px;margin-top: -12px" placeholder="选择时间" v-model="form.date2" ></el-time-picker>
   </el-form-item>
-  <el-form-item label="活动性质">
+  <el-form-item label="任务性质">
     <el-checkbox-group v-model="form.type">
       <el-checkbox label="性质1" name="type"></el-checkbox>
       <el-checkbox label="性质2" name="type"></el-checkbox>
@@ -17,10 +16,10 @@
     </el-checkbox-group>
   </el-form-item>
   <el-form-item label="任务内容">
-    <el-input type="textarea" v-model="form.desc"></el-input>
+    <el-input type="textarea" style="width: 80%" v-model="form.desc" ref="input2"></el-input>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="onSubmit">立即创建</el-button>
+    <el-button type="primary" @click="allot">任务发布</el-button>
     <el-button>取消</el-button>
   </el-form-item>
 </el-form>
@@ -44,17 +43,61 @@
     methods: {
       onSubmit() {
         console.log('submit!');
-      }
+      },
+      allot(){
+        this.$msgbox({
+          title: this.$refs.input1.value,
+          message: this.$refs.input2.value,
+          showCancelButton: true,
+          confirmButtonText: '发送',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              if(this.$refs.input2.value===""||this.$refs.input1.value===""){
+               this.$message({
+                message: '警告,任务名称或内容不能为空',
+                type: 'warning'
+              });
+              }else{
+                  instance.confirmButtonLoading = true;
+                  instance.confirmButtonText = '执行中...';
+                  setTimeout(() => {
+                    done();
+                    setTimeout(() => {
+                      instance.confirmButtonLoading = false;
+                    }, 300);
+                    this.$message({
+                    message: '恭喜你，这是一条成功消息',
+                    type: 'success'
+                  });
+                  }, 3000);
+                }
+            } else {
+              done();
+            }
+          }
+        }).then(action => {
+          if(action==="confirm"){
+            action = "成功"
+          }else{
+            action = "取消"
+          }
+          this.$message({
+            type: 'info',
+            message: '发送' + action
+          });
+        });
+      },
     }
   }
 </script>
-<style>
+<style scoped>
 .el-input {
     width: 30%;
     line-height: 60px;
     text-align: center;
     position: absolute;
-    right: 20px;
+    left: 0px;
 }
 .el-radio-group label span {
     width: 18px; 
@@ -77,5 +120,16 @@
 .el-input__icon+.el-input__inner {
     margin-top: 2px;
     border-radius: 18px;
+}
+.el-input__icon {
+    position: absolute;
+    width: 35px;
+    height: 100%;
+    right: 0;
+    top: -8px;
+    text-align: center;
+    color: #bfcbd9;
+    -webkit-transition: all .3s;
+    transition: all .3s;
 }
 </style>
